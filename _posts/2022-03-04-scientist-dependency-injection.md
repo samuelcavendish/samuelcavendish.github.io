@@ -78,4 +78,4 @@ I can then register the Experiment class in the containter and use it in the cri
 
 ## Summary
 
-Hopefully some other users of Scientist can get some use out of this pattern to allow multiple dependencies with the same interface. Happy sciencing!
+Hopefully some other users of Scientist can get some use out of this pattern to allow multiple dependencies with the same interface. Check out the package on [GitHub](https://github.com/samuelcavendish/Scientist.DependencyInjection) and [Nuget.org](https://www.nuget.org/packages/Scientist.DependencyInjection/). Happy sciencing!
