@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Scientist DependencyInjection"
+title:  "Scientist & DependencyInjection"
 ---
 
 Recently I've been using Scientist to test critical path changes within a codebase. The library is amazing, but one thing I found a bit cumbersome was getting the dependencies in place for the Try method. I often wanted to use interfaces for the experiment that were already being used and registered by the main application. To plug this hole, I created a library, Scientist.DependencyInjection
