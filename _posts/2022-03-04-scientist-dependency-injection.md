@@ -1,4 +1,5 @@
 ---
+layout: post
 title:  "Scientist.DependencyInjection"
 ---
 
