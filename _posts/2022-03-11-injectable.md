@@ -171,7 +171,7 @@ For some users, they'd expect MyClass to be injected (which it is by default). F
 In this case the user could filter the results that come back from Injectable before registering the types, like so:
 
 ```
-var injectables = Injectables.GetInjectables()
+var injectables = Injectables.GetInjectables(this.GetType().Assembly)
     .Where(x => x.Implementation.GetAttribute<Inject>() is null);
 ```
 
