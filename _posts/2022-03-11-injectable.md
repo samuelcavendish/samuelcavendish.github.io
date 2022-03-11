@@ -40,13 +40,13 @@ Injectable flips this on its head and works by decorating injectable types with 
 Injectable produces a list of injectable types which can then be used like so:
 
 ```
-foreach (var injectable in Injectables.GetInjectables())
+foreach (var injectable in Injectables.GetInjectables(this.GetType().Assembly))
 {
     services.AddSingleton(injectable.Service, injectable.Implementation);
 }
 ```
 
-You may note I'm no longer specifying the `IMyInterface`. By default Injectable will get all the implementations in the assembly, if you want to just register certain types you could change the `Injectables.GetInjectables()` to `Injectables.GetInjectables().OfType<IMyInterface>()`. You can use this functionality to choose how services are registered (e.g. register some services as Singleton & others as Transient)
+You may note I'm no longer specifying the `IMyInterface`. By default Injectable will get all the implementations in the assembly, if you want to just register certain types you could change the `Injectables.GetInjectables(this.GetType().Assembly)` to `Injectables.GetInjectables(this.GetType().Assembly).OfType<IMyInterface>()`. You can use this functionality to choose how services are registered (e.g. register some services as Singleton & others as Transient)
 
 ## What can I register
 
@@ -113,21 +113,21 @@ I wanted the ability to register all of my repositories automatically, so how co
 ```
 [Inject(As = InjectType.FirstGeneric)]
 public interface IRepository<T> { }
-public class ItemReadRepository : IRepository<ItemReadRepository> { }
-public class ItemWriteRepository : IRepository<ItemWriteRepository> { }
+public class ItemReadRepository : IRepository<IItemReadRepository> { }
+public class ItemWriteRepository : IRepository<IItemWriteRepository> { }
 ```
 
 Is equivalent to
 
 ```
-services.AddSingleton<ItemReadRepository, ItemReadRepository>();
-services.AddSingleton<ItemWriteRepository, ItemWriteRepository>();
+services.AddSingleton<IItemReadRepository, ItemReadRepository>();
+services.AddSingleton<IItemWriteRepository, ItemWriteRepository>();
 ```
 
 The setup is a bit more complicated, but now, all my repositories are automatically registered and can be injected/received from DI like normal
 
 ```
-services.GetRequiredService<ItemReadRepository>();
+services.GetRequiredService<IItemReadRepository>();
 ```
 
 ### Multiple implementations
@@ -139,7 +139,7 @@ services.AddSingleton<IInterface, Implementation1>();
 services.AddSingleton<IInterface, Implementation2>();
 ```
 
-Would result in `Implementation2` being retrieved when requesting IInterface. Injectable doesn't do any work to try and resolve this, that would be down to the user as Injectable has no way of determining the order. The multiple registration does however mean you can take advantage of desired multiple registrations e.g.
+Would result in `Implementation2` being retrieved when requesting IInterface. Injectable doesn't do any work to try and resolve this, that would be down to the user as Injectable has no way of determining the significance or order for the dependency. The multiple registration does however mean you can take advantage of desired multiple registrations e.g.
 
 ```
 [Inject]
@@ -159,7 +159,7 @@ foreach (var messageHandler in messageHandlers) {
 
 ### Putting the power in your hands
 
-When authoring a library like this, it's imposible to cater to everyones expectations. Lets take an example:
+When authoring a library like this, it's impossible to cater to everyones expectations. Lets take an example:
 
 ```
 [Inject]
